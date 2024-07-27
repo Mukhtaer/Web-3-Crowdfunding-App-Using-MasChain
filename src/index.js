@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import { getConfig } from "./config";
 import { createUserWallet, fetchUserWallet } from './MasChainApi';
+import { UserProvider, useUserContext } from './UserContext';
 
 const config = getConfig();
 
@@ -68,34 +69,35 @@ const updateAuth0UserProfile = async (userId, walletAddress, token) => {
 
 const AuthWrapper = ({ children }) => {
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
-  const [walletAddress, setWalletAddress] = React.useState('');
+  const { setUser, walletAddress, setWalletAddress } = useUserContext();
 
   React.useEffect(() => {
     const handleUserLogin = async () => {
       if (isAuthenticated && user) {
+        setUser(user);
         const token = await getAccessTokenSilently();
         let userMetadata = await fetchUserMetadata(user.sub, token);
-        let walletAddress = userMetadata?.wallet_address || '';
+        let walletAddr = userMetadata?.wallet_address || '';
 
-        if (!walletAddress) {
+        if (!walletAddr) {
           const walletData = await createUserWallet(user, token);
           if (walletData && walletData.result.wallet) {
-            walletAddress = walletData.result.wallet.wallet_address;
-            await updateAuth0UserProfile(user.sub, walletAddress, token);
+            walletAddr = walletData.result.wallet.wallet_address;
+            await updateAuth0UserProfile(user.sub, walletAddr, token);
           }
         } else {
-          const walletData = await fetchUserWallet(user.sub, walletAddress);
+          const walletData = await fetchUserWallet(user.sub, walletAddr);
           console.log("Existing Wallet Data: ", walletData);
         }
 
-        setWalletAddress(walletAddress);
+        setWalletAddress(walletAddr);
       }
     };
 
     handleUserLogin();
-  }, [isAuthenticated, user, getAccessTokenSilently]);
+  }, [isAuthenticated, user, getAccessTokenSilently, setUser, setWalletAddress]);
 
-  return React.cloneElement(children, { walletAddress });
+  return children;
 };
 
 
@@ -103,9 +105,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Auth0Provider {...providerConfig}>
-      <AuthWrapper>
-        <App />
-      </AuthWrapper>
+      <UserProvider>
+        <AuthWrapper>
+          <App />
+        </AuthWrapper>
+      </UserProvider>
     </Auth0Provider>
   </React.StrictMode>
 );

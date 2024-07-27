@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const config = getConfig();
 
-const ViewCampaigns = () => {
+const MyCampaigns = () => {
     const [campaigns, setCampaigns] = useState([]);
     const [loading, setLoading] = useState(true);
     const { walletAddress } = useUserContext();
@@ -41,8 +41,8 @@ const ViewCampaigns = () => {
     };
 
     return (
-        <div className="container mx-auto p-6 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg max-w-screen-xl">
-            <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800 dark:text-gray-200">View Campaigns</h2>
+        <div className="container mx-auto p-6 max-w-screen-xl">
+            <h4 className="text-3xl font-semibold text-center mb-6 text-gray-800 dark:text-gray-200">Campaigns I Crearted</h4>
             {loading ? (
                 <div className="flex justify-center items-center h-64">
                     <div className="loader"></div>
@@ -85,4 +85,4 @@ const ViewCampaigns = () => {
     );
 };
 
-export default ViewCampaigns;
+export default MyCampaigns;

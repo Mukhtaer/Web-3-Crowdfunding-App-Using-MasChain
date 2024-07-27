@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon, faCopy } from '@fortawesome/free-solid-svg-icons';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
+import { useUserContext } from '../UserContext';
 
-const Header = ({ walletAddress }) => {
+const Header = () => {
     const [darkMode, setDarkMode] = useState(false);
     const { isAuthenticated, user } = useAuth0();
+    const { walletAddress } = useUserContext(); // Access walletAddress from context
 
     useEffect(() => {
         const savedMode = localStorage.getItem('darkMode') === 'true';
@@ -33,19 +35,22 @@ const Header = ({ walletAddress }) => {
             <div className="max-w-screen-xl mx-auto flex justify-between items-center">
                 <Link to="/" className="flex items-center space-x-2">
                     <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Logo" />
-                    <span className="text-2xl font-semibold text-white">Crowdfunding MasChain</span>
+                    <span className="text-2xl font-semibold text-white">DonateChain</span>
                 </Link>
+
+                <Link to='/my-campaigns' className="text-white hover:text-gray-200">My Compaigns</Link>
                 <nav className="flex items-center space-x-6">
-                    <Link to="/campaigns" className="text-white hover:text-gray-200">View Campaigns</Link>
                     {isAuthenticated && (
                         <Link to="/create-campaign" className="text-white hover:text-gray-200">Create Campaign</Link>
+
                     )}
+                    <Link to="/campaigns" className="text-white hover:text-gray-200">View Campaigns</Link>
                 </nav>
                 <div className="flex items-center space-x-3">
                     {isAuthenticated ? (
                         <div className="flex items-center space-x-3">
                             <img src={user.picture} alt={user.name} className="h-8 w-8 rounded-full" />
-                            <span className="text-white">Welcome, {user.name}</span>
+                            <span className="text-white">{user.name}</span>
                             {walletAddress && (
                                 <div className="flex items-center space-x-2">
                                     <span className="text-white">
