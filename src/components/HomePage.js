@@ -6,7 +6,6 @@ const Homepage = () => {
             <p className="text-lg text-gray-700 dark:text-gray-300 max-w-xl">
                 Explore campaigns, donate, or create your own project to start raising funds.
             </p>
-            <div className="mt-6">
                 <button className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">
                     Explore Campaigns
                 </button>
