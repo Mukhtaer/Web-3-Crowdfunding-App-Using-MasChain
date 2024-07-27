@@ -18,8 +18,9 @@ export function getConfig() {
     MASCHAIN_API_URL: configJson.MASCHAIN_API_URL,
     MASCHAIN_API_KEY: configJson.MASCHAIN_API_KEY,
     MASCHAIN_SECRET_KEY: configJson.MASCHAIN_SECRET_KEY,
+    MASCHAIN_CONTRACT_ADD: configJson.MASCHAIN_CONTRACT_ADD,
     AUTH0_DOMAIN: configJson.AUTH0_DOMAIN,
-    token: configJson.token
+    token: configJson.token,
 
   };
 }

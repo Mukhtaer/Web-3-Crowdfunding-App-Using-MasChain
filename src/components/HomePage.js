@@ -58,9 +58,9 @@ const Homepage = () => {
             <footer className="relative z-10 mt-16 bg-gray-800 text-white py-8 w-full text-center">
                 <p>&copy; 2024 MasChain Crowdfunding. All rights reserved.</p>
                 <div className="mt-4">
-                    <a href="#" className="text-blue-400 hover:text-blue-500 mx-2">Privacy Policy</a>
-                    <a href="#" className="text-blue-400 hover:text-blue-500 mx-2">Terms of Service</a>
-                    <a href="#" className="text-blue-400 hover:text-blue-500 mx-2">Contact Us</a>
+                    <a href="/" className="text-blue-400 hover:text-blue-500 mx-2">Privacy Policy</a>
+                    <a href="/" className="text-blue-400 hover:text-blue-500 mx-2">Terms of Service</a>
+                    <a href="/" className="text-blue-400 hover:text-blue-500 mx-2">Contact Us</a>
                 </div>
             </footer>
         </div>
