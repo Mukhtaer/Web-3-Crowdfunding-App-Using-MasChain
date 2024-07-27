@@ -7,6 +7,7 @@ const ViewCampaigns = () => {
     useEffect(() => {
         const fetchCampaigns = async () => {
             try {
+                // Replace with your API endpoint
                 const response = await fetch('http://localhost:5000/api/campaigns');
                 const data = await response.json();
                 setCampaigns(data);
@@ -47,6 +48,22 @@ const ViewCampaigns = () => {
                         </div>
                     </div>
                 ))}
+                {/* Sample Card for Demo Purposes */}
+                <div className="bg-white p-6 rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 clip-path-polygon"></div>
+                    <div className="relative z-10">
+                        <h3 className="text-xl font-bold text-white">Sample Campaign</h3>
+                        <p className="text-white">This is a description of the sample campaign. It provides an example of how campaign details are displayed.</p>
+                        <p className="text-white mt-2">Organization: Sample Organization</p>
+                        <img src="https://via.placeholder.com/150" alt="Evidence" className="mt-2 rounded shadow-md" />
+                        <button
+                            onClick={() => handleDonate('sample-id')}
+                            className="w-full bg-white text-blue-500 p-2 rounded mt-4 font-bold hover:bg-blue-500 hover:text-white transition-colors duration-300"
+                        >
+                            Donate
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );
