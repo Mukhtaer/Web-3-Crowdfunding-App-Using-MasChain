@@ -4,6 +4,7 @@ import Header from './components/Header';
 import UserRegistration from './components/UserRegistration';
 import Campaigns from './components/Campaigns';
 import CreateCampaign from './components/CreateCampaign';
+import Homepage from './components/HomePage';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <div className="App bg-gray-100 dark:bg-gray-900 min-h-screen">
         <Header />
         <Routes>
-          <Route path="/" element={<div>Welcome to MasChain Crowdfunding</div>} />
+          <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<UserRegistration />} />
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/create-campaign" element={<CreateCampaign />} />
