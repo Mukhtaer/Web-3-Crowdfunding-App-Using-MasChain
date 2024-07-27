@@ -4,7 +4,6 @@ const Homepage = () => {
     return (
             <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Welcome to MasChain Crowdfunding</h1>
             <p className="text-lg text-gray-700 dark:text-gray-300 max-w-xl">
-                MasChain Crowdfunding is a platform that allows users to support innovative projects and ideas using blockchain technology.
                 Explore campaigns, donate, or create your own project to start raising funds.
             </p>
             <div className="mt-6">
