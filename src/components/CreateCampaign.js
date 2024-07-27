@@ -1,60 +1,81 @@
 import React, { useState } from 'react';
 
-const CreateCampaign = () => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [message, setMessage] = useState('');
+const CampaignForm = () => {
+    const [formData, setFormData] = useState({
+        organization: '',
+        reason: '',
+        evidence: null,
+    });
+    const [preview, setPreview] = useState(null);
 
-    const handleCreate = async (e) => {
-        e.preventDefault();
-        setMessage('Creating campaign...');
-        try {
-            const response = await fetch('http://localhost:5000/api/campaigns', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ title, description }),
+    const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        if (name === 'evidence') {
+            setFormData({
+                ...formData,
+                [name]: files[0],
             });
-            const data = await response.json();
-            if (response.ok) {
-                setMessage(`Campaign created: ${data.title}`);
-            } else {
-                setMessage(`Error: ${data.error}`);
-            }
-        } catch (error) {
-            setMessage('Error creating campaign.');
+            setPreview(URL.createObjectURL(files[0]));
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value,
+            });
         }
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Handle form submission logic
+        console.log(formData);
+    };
+
     return (
-        <div className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4">Create Campaign</h2>
-            <form onSubmit={handleCreate} className="bg-white p-6 rounded shadow-md">
-                <div className="mb-4">
-                    <label className="block text-gray-700 mb-2">Title:</label>
+        <div className="max-w-md mx-auto p-6 rounded-lg shadow-lg mt-6 transform transition-all duration-300 hover:scale-105 bg-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 clip-path-polygon"></div>
+            <h2 className="text-3xl font-bold text-white mb-4 text-center relative z-10">Create a Campaign</h2>
+            <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+                <div>
+                    <label className="block text-white font-medium">Organization Name</label>
                     <input
                         type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="w-full px-3 py-2 border rounded"
+                        name="organization"
+                        value={formData.organization}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
                     />
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 mb-2">Description:</label>
+                <div>
+                    <label className="block text-white font-medium">Reason for Campaign</label>
                     <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="w-full px-3 py-2 border rounded"
+                        name="reason"
+                        value={formData.reason}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
                     />
                 </div>
-                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    Create Campaign
+                <div>
+                    <label className="block text-white font-medium">Evidence Photo</label>
+                    <input
+                        type="file"
+                        name="evidence"
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                    {preview && <img src={preview} alt="Evidence Preview" className="mt-2 rounded shadow-md" />}
+                </div>
+                <button
+                    type="submit"
+                    className="w-full bg-white text-blue-500 p-2 rounded mt-4 font-bold hover:bg-blue-500 hover:text-white transition-colors duration-300"
+                >
+                    Submit Campaign
                 </button>
             </form>
-            {message && <p className="mt-4 text-red-500">{message}</p>}
         </div>
     );
 };
 
-export default CreateCampaign;
+export default CampaignForm;
