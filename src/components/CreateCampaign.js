@@ -5,6 +5,8 @@ const CampaignForm = () => {
         organization: '',
         reason: '',
         evidence: null,
+        targetAmount: '',
+        timeFrame: '',
     });
     const [preview, setPreview] = useState(null);
 
@@ -66,6 +68,28 @@ const CampaignForm = () => {
                         required
                     />
                     {preview && <img src={preview} alt="Evidence Preview" className="mt-2 rounded shadow-md" />}
+                </div>
+                <div>
+                    <label className="block text-white font-medium">Target Amount (USD)</label>
+                    <input
+                        type="number"
+                        name="targetAmount"
+                        value={formData.targetAmount}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block text-white font-medium">Time Frame (e.g., 6 months)</label>
+                    <input
+                        type="text"
+                        name="timeFrame"
+                        value={formData.timeFrame}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
                 </div>
                 <button
                     type="submit"
