@@ -1,24 +1,12 @@
 // CreateCampaign.js
 import React, { useState } from 'react';
 
-<<<<<<< HEAD
 const CreateCampaign = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [images, setImages] = useState([]);
     const [message, setMessage] = useState('');
-=======
-const CampaignForm = () => {
-    const [formData, setFormData] = useState({
-        organization: '',
-        reason: '',
-        evidence: null,
-        targetAmount: '',
-        timeFrame: '',
-    });
-    const [preview, setPreview] = useState(null);
->>>>>>> fe40217f8fb3d4e20a61e05d542c9cad18cddb0f
 
     const handleCreate = async (e) => {
         e.preventDefault();
@@ -91,38 +79,8 @@ const CampaignForm = () => {
                         ))}
                     </div>
                 </div>
-<<<<<<< HEAD
                 <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
                     Create Campaign
-=======
-                <div>
-                    <label className="block text-white font-medium">Target Amount (USD)</label>
-                    <input
-                        type="number"
-                        name="targetAmount"
-                        value={formData.targetAmount}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block text-white font-medium">Time Frame (e.g., 6 months)</label>
-                    <input
-                        type="text"
-                        name="timeFrame"
-                        value={formData.timeFrame}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="w-full bg-white text-blue-500 p-2 rounded mt-4 font-bold hover:bg-blue-500 hover:text-white transition-colors duration-300"
-                >
-                    Submit Campaign
->>>>>>> fe40217f8fb3d4e20a61e05d542c9cad18cddb0f
                 </button>
             </form>
             {message && <p className="mt-4 text-center text-red-500">{message}</p>}

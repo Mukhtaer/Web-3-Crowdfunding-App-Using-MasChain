@@ -3,22 +3,66 @@ import React from 'react';
 const Homepage = () => {
     return (
         <div className="relative min-h-screen flex flex-col items-center justify-center px-4 text-center bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0')" }}>
-            <div className="absolute inset-0 bg-black opacity-50"></div>
-            <div className="relative z-10">
-                <h1 className="text-5xl font-extrabold mb-4 text-white">Welcome to MasChain Crowdfunding</h1>
-                <p className="text-xl text-gray-200 max-w-xl mx-auto mb-8">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-500 opacity-75"></div>
+            <div className="relative z-10 text-white">
+                <h1 className="text-5xl font-extrabold mb-4 animate-fade-in">Welcome to MasChain Crowdfunding</h1>
+                <p className="text-xl max-w-xl mx-auto mb-8 animate-fade-in delay-100">
                     MasChain Crowdfunding is a platform that allows users to support innovative projects and ideas using blockchain technology.
                     Explore campaigns, donate, or create your own project to start raising funds.
                 </p>
                 <div className="space-x-4">
-                    <button className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700">
+                    <button className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-transform transform hover:scale-105">
                         Explore Campaigns
                     </button>
-                    <button className="px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700">
+                    <button className="px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-transform transform hover:scale-105">
                         Start a Campaign
                     </button>
                 </div>
             </div>
+            <div className="relative z-10 mt-16">
+                <h2 className="text-3xl font-bold mb-6 text-white">Featured Campaigns</h2>
+                <div className="flex flex-wrap justify-center gap-6">
+                    {/* Sample campaign cards */}
+                    <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+                        <h3 className="text-xl font-bold mb-2 text-gray-900">Campaign 1</h3>
+                        <p className="text-gray-700">Brief description of the campaign...</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+                        <h3 className="text-xl font-bold mb-2 text-gray-900">Campaign 2</h3>
+                        <p className="text-gray-700">Brief description of the campaign...</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+                        <h3 className="text-xl font-bold mb-2 text-gray-900">Campaign 3</h3>
+                        <p className="text-gray-700">Brief description of the campaign...</p>
+                    </div>
+                </div>
+            </div>
+            <div className="relative z-10 mt-16">
+                <h2 className="text-3xl font-bold mb-6 text-white">Testimonials</h2>
+                <div className="flex flex-wrap justify-center gap-6">
+                    {/* Sample testimonials */}
+                    <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+                        <p className="text-gray-700">"This platform has transformed the way we fund our projects!"</p>
+                        <p className="mt-2 font-bold text-gray-900">- User 1</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+                        <p className="text-gray-700">"I was able to gather support for my project quickly and efficiently."</p>
+                        <p className="mt-2 font-bold text-gray-900">- User 2</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+                        <p className="text-gray-700">"Amazing platform with great features for campaign creators."</p>
+                        <p className="mt-2 font-bold text-gray-900">- User 3</p>
+                    </div>
+                </div>
+            </div>
+            <footer className="relative z-10 mt-16 bg-gray-800 text-white py-8 w-full text-center">
+                <p>&copy; 2024 MasChain Crowdfunding. All rights reserved.</p>
+                <div className="mt-4">
+                    <a href="#" className="text-blue-400 hover:text-blue-500 mx-2">Privacy Policy</a>
+                    <a href="#" className="text-blue-400 hover:text-blue-500 mx-2">Terms of Service</a>
+                    <a href="#" className="text-blue-400 hover:text-blue-500 mx-2">Contact Us</a>
+                </div>
+            </footer>
         </div>
     );
 };
