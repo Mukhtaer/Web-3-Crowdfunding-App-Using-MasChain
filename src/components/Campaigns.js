@@ -1,37 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-const Campaigns = () => {
-    const [campaigns, setCampaigns] = useState([]);
-    const [error, setError] = useState('');
+const CampaignForm = () => {
+    const [formData, setFormData] = useState({
+        organization: '',
+        reason: '',
+        evidence: null,
+    });
+    const [preview, setPreview] = useState(null);
 
-    useEffect(() => {
-        const fetchCampaigns = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/api/campaigns');
-                const data = await response.json();
-                setCampaigns(data);
-            } catch (error) {
-                setError('Error fetching campaigns');
-            }
-        };
+    const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        if (name === 'evidence') {
+            setFormData({
+                ...formData,
+                [name]: files[0],
+            });
+            setPreview(URL.createObjectURL(files[0]));
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value,
+            });
+        }
+    };
 
-        fetchCampaigns();
-    }, []);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Handle form submission logic
+        console.log(formData);
+    };
 
     return (
-        <div className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4">Campaigns</h2>
-            {error && <p className="text-red-500">{error}</p>}
-            <ul className="space-y-4">
-                {campaigns.map((campaign) => (
-                    <li key={campaign.id} className="bg-white p-4 rounded shadow-md">
-                        <h3 className="text-xl font-bold">{campaign.title}</h3>
-                        <p>{campaign.description}</p>
-                    </li>
-                ))}
-            </ul>
+        <div className="max-w-md mx-auto p-6 rounded-lg shadow-lg mt-6 transform transition-all duration-300 hover:scale-105 bg-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 clip-path-polygon"></div>
+            <h2 className="text-3xl font-bold text-white mb-4 text-center relative z-10">Create a Campaign</h2>
+            <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+                <div>
+                    <label className="block text-white font-medium">Organization Name</label>
+                    <input
+                        type="text"
+                        name="organization"
+                        value={formData.organization}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block text-white font-medium">Reason for Campaign</label>
+                    <textarea
+                        name="reason"
+                        value={formData.reason}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block text-white font-medium">Evidence Photo</label>
+                    <input
+                        type="file"
+                        name="evidence"
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                    {preview && <img src={preview} alt="Evidence Preview" className="mt-2 rounded shadow-md" />}
+                </div>
+                <button
+                    type="submit"
+                    className="w-full bg-white text-blue-500 p-2 rounded mt-4 font-bold hover:bg-blue-500 hover:text-white transition-colors duration-300"
+                >
+                    Submit Campaign
+                </button>
+            </form>
         </div>
     );
 };
 
-export default Campaigns;
+export default CampaignForm;
