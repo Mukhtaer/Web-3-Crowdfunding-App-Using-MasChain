@@ -45,7 +45,7 @@ const CreateCampaign = () => {
             const category_ids = [5];
             const formData = new FormData();
             formData.append('wallet_address', walletAddress);
-            formData.append('contract_address', config.MASCHAIN_CONTRACT_ADD);
+            formData.append('contract_address', config.MASCHAIN_CONTRACT_AUDIT);
             category_ids.forEach((id) => {
                 formData.append('category_id[]', id);
             });

@@ -3,6 +3,7 @@ import { getConfig } from "../config";
 import { useUserContext } from '../UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 const config = getConfig();
 
@@ -41,7 +42,7 @@ const ViewCampaigns = () => {
     };
 
     return (
-        <div className="container mx-auto p-6 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg max-w-screen-xl">
+        <div className="container mx-auto p-6  rounded-lg  max-w-screen-xl">
             <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800 dark:text-gray-200">View Campaigns</h2>
             {loading ? (
                 <div className="flex justify-center items-center h-64">
@@ -67,14 +68,14 @@ const ViewCampaigns = () => {
                                         {metadata.name}
                                     </h3>
                                     <p className='text-sm  text-gray-800 dark:text-gray-200'>
-                                        By: {metadata.entity_id}
+                                        CREATOR: {metadata.entity_id}
                                     </p>
                                     <p className="text-gray-600 dark:text-gray-400 mb-4">
                                         {metadata.content}
                                     </p>
-                                    <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-900">
+                                    <Link to={`/campaign-details/${campaign.transactionHash}`} className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-900">
                                         Donate
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         );

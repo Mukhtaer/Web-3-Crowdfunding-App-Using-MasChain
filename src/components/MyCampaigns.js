@@ -67,7 +67,7 @@ const MyCampaigns = () => {
                                         {metadata.name}
                                     </h3>
                                     <p className='text-sm  text-gray-800 dark:text-gray-200'>
-                                        By: {metadata.entity_id}
+                                        CREATOR: YOU
                                     </p>
                                     <p className="text-gray-600 dark:text-gray-400 mb-4">
                                         {metadata.content}
