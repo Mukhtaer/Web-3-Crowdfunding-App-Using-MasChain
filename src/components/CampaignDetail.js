@@ -153,7 +153,7 @@ const CampaignDetails = () => {
             </div>
             <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Campaign Details</h3>
-                <div className="relative w-full bg-gray-300 dark:bg-gray-600 h-4 rounded-full overflow-hidden mt-2">
+                <div className="relative w-full bg-gray-300 dark:bg-gray-600 h-1  mb-3 rounded-full overflow-hidden mt-2">
                     <div
                         className="absolute top-0 left-0 h-full bg-blue-600 dark:bg-blue-700"
                         style={{ width: `${donationProgress}%` }}
