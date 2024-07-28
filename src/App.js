@@ -9,6 +9,7 @@ import Homepage from './components/HomePage';
 import LoadingSpinner from './components/LoadingSpinner';
 import MyCampaigns from './components/MyCampaigns';
 import CampaignDetails from './components/CampaignDetail';
+import MyDonations from './components/MyDonations';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path='/my-campaigns' element={<MyCampaigns />} />
           <Route path="/create-campaign" element={<CreateCampaign />} />
           <Route path="/campaign-details/:id" element={<CampaignDetails />} />
+          <Route path="/my-donations" element={<MyDonations />} />
 
         </Routes>
       </div>

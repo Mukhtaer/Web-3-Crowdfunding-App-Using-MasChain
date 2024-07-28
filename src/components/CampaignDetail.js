@@ -4,6 +4,7 @@ import { getConfig } from "../config";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useUserContext } from '../UserContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const config = getConfig();
 
@@ -15,6 +16,8 @@ const CampaignDetails = () => {
     const { walletAddress } = useUserContext();
     const [donationHistory, setDonationHistory] = useState([]);
     const [totalDonated, setTotalDonated] = useState(0);
+    const [tokenBalance, setTokenBalance] = useState(0);
+    const { isAuthenticated, loginWithRedirect } = useAuth0();
 
     useEffect(() => {
         const fetchCampaign = async () => {
@@ -70,15 +73,55 @@ const CampaignDetails = () => {
             }
         };
 
+        const fetchTokenBalance = async () => {
+            try {
+                const response = await fetch(`${config.MASCHAIN_API_URL}/api/token/balance`, {
+                    method: 'POST',
+                    headers: {
+                        'client_id': config.MASCHAIN_API_KEY,
+                        'client_secret': config.MASCHAIN_SECRET_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        wallet_address: walletAddress,
+                        contract_address: config.MASCHAIN_CONTRACT_ADD
+                    })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setTokenBalance(parseFloat(data.result));
+                } else {
+                    toast.error(`Error fetching balance: ${data.error}`);
+                }
+            } catch (error) {
+                toast.error('Error fetching balance.');
+            }
+        };
+
         fetchCampaign();
         fetchDonations();
-    }, [id]);
+        if (walletAddress) {
+            fetchTokenBalance();
+        }
+    }, [id, walletAddress]);
 
     const handleDonate = async () => {
+        if (!isAuthenticated) {
+            toast.error('You must be logged in to donate.');
+            return;
+        }
+
         if (!campaign) return;
 
         const donationAmount = prompt("Enter the amount to donate:");
         if (!donationAmount) return;
+
+        const donationAmountFloat = parseFloat(donationAmount);
+
+        if (donationAmountFloat > tokenBalance) {
+            toast.error('Insufficient token balance.');
+            return;
+        }
 
         try {
             const formData = new FormData();
@@ -123,7 +166,8 @@ const CampaignDetails = () => {
                 });
 
                 setDonationHistory([...donationHistory, { metadata: JSON.stringify({ amount: donationAmount, from: walletAddress, transactionHash: data.result.content }) }]);
-                setTotalDonated(prevTotal => prevTotal + parseFloat(donationAmount));
+                setTotalDonated(prevTotal => prevTotal + donationAmountFloat);
+                setTokenBalance(prevBalance => prevBalance - donationAmountFloat);
             } else {
                 toast.error(`Error: ${data.result}`);
             }
@@ -153,7 +197,7 @@ const CampaignDetails = () => {
             </div>
             <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Campaign Details</h3>
-                <div className="relative w-full bg-gray-300 dark:bg-gray-600 h-1  mb-3 rounded-full overflow-hidden mt-2">
+                <div className="relative w-full bg-gray-300 dark:bg-gray-600 h-1 mb-3 rounded-full overflow-hidden mt-2">
                     <div
                         className="absolute top-0 left-0 h-full bg-blue-600 dark:bg-blue-700"
                         style={{ width: `${donationProgress}%` }}
@@ -175,31 +219,46 @@ const CampaignDetails = () => {
                     <h4 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Raised Amount:</h4>
                     <p className="text-gray-600 dark:text-gray-400">{totalDonated}</p>
                 </div>
-                <button
-                    onClick={handleDonate}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-900"
-                >
-                    Donate
-                </button>
-            </div>
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6">
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Donators</h3>
-                {donationHistory.length > 0 ? (
-                    <ul>
-                        {donationHistory.map((donation, index) => {
-                            const donationData = JSON.parse(donation.metadata);
-                            return (
-                                <li key={index} className="flex justify-between items-center bg-gray-100 dark:bg-gray-900 p-4 rounded-lg mb-2">
-                                    <span className="text-gray-800 dark:text-gray-200 font-semibold">{donationData.from}</span>
-                                    <span className="text-blue-600 dark:text-blue-400 font-semibold">{donationData.amount} Tokens</span>
-                                </li>
-                            );
-                        })}
-                    </ul>
+                <div className="mb-4">
+                    <h4 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Your Token Balance:</h4>
+                    <p className="text-gray-600 dark:text-gray-400">{tokenBalance.toFixed(2)} Tokens</p>
+                </div>
+                {isAuthenticated ? (
+                    <button
+                        onClick={handleDonate}
+                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-900"
+                    >
+                        Donate
+                    </button>
                 ) : (
-                    <p className="text-gray-600 dark:text-gray-400">No donations made yet.</p>
+                    <button
+                        onClick={() => loginWithRedirect()}
+                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-900"
+                    >
+                        Donate
+                    </button>
                 )}
             </div>
+            {isAuthenticated && (
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6">
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Donators</h3>
+                    {donationHistory.length > 0 ? (
+                        <ul>
+                            {donationHistory.map((donation, index) => {
+                                const donationData = JSON.parse(donation.metadata);
+                                return (
+                                    <li key={index} className="flex justify-between items-center bg-gray-100 dark:bg-gray-900 p-4 rounded-lg mb-2">
+                                        <span className="text-gray-800 dark:text-gray-200 font-semibold">{donationData.from}</span>
+                                        <span className="text-blue-600 dark:text-blue-400 font-semibold">{donationData.amount} Tokens</span>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    ) : (
+                        <p className="text-gray-600 dark:text-gray-400">No donations made yet.</p>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
